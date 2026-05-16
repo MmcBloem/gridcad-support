@@ -3,6 +3,9 @@
 <head>
     <title>GridCAD Electrical Support</title>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,9 +14,16 @@
             padding: 40px;
             background: #f7f7f7;
             color: #222;
+            line-height: 1.6;
         }
 
         h1 {
+            color: #111;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 0;
             color: #111;
         }
 
@@ -28,6 +38,32 @@
         a {
             color: #007AFF;
             text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 20px;
+            background: #007AFF;
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            opacity: 0.9;
+            text-decoration: none;
+        }
+
+        .footer {
+            margin-top: 40px;
+            color: #666;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -37,13 +73,15 @@
     <h1>GridCAD Electrical</h1>
 
     <p>
-        Professional electrical CAD design for iPad.
+        Professional electrical CAD design for iPad and Mac.
     </p>
 
     <div class="card">
         <h2>Support</h2>
 
-        <p>Email support:</p>
+        <p>
+            For technical support or assistance, contact:
+        </p>
 
         <p>
             <a href="mailto:mikegencor1@gmail.com">
@@ -53,30 +91,44 @@
     </div>
 
     <div class="card">
+        <h2>User Tutorial</h2>
+
+        <p>
+            View the GridCAD Electrical tutorial and getting started guide.
+        </p>
+
+        <a class="button" href="gridcad-tutorial.html">
+            Open Tutorial
+        </a>
+    </div>
+
+    <div class="card">
         <h2>Privacy Policy</h2>
 
         <p>
-            <a href="privacy-policy.html">
-                View Privacy Policy
-            </a>
+            Read the GridCAD Electrical privacy policy.
         </p>
+
+        <a class="button" href="privacy-policy.html">
+            View Privacy Policy
+        </a>
     </div>
 
     <div class="card">
         <h2>About GridCAD Electrical</h2>
 
         <p>
-            GridCAD Electrical is a professional electrical CAD application for engineers, panel builders, electricians, and technical designers.
+            GridCAD Electrical is a professional electrical CAD application designed for engineers, electricians, switchboard manufacturers, and technical designers.
         </p>
 
         <p>
-            Designed for fast electrical drafting workflows on iPad.
+            The application focuses on fast electrical drafting workflows, project management, and electrical design productivity on iPad and Mac.
         </p>
     </div>
 
-    <p style="margin-top:40px;">
+    <div class="footer">
         © 2026 Michael Mc Intyre
-    </p>
+    </div>
 
 </body>
 </html>
