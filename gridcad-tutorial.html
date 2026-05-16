@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>gridCAD electrical App Tutorial</title>
+  <meta name="description" content="Complete tutorial for using gridCAD electrical to create sites, projects, CAD drawings, imports, annotations, item counts, dimensions, tables, exports, and backups.">
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --paper: #ffffff;
+      --ink: #1e2528;
+      --muted: #5f6c70;
+      --line: #d8d2c4;
+      --brand: #0f766e;
+      --brand-dark: #0b4f4a;
+      --gold: #b7791f;
+      --blue: #2563eb;
+      --panel: #eef7f5;
+      --warn-bg: #fff7ed;
+      --warn-line: #fed7aa;
+      --shadow: 0 18px 50px rgba(38, 34, 25, 0.10);
+      color-scheme: light;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.14), transparent 32rem),
+        linear-gradient(180deg, #fbfaf7 0%, var(--bg) 46%, #eee9dd 100%);
+    }
+
+    a {
+      color: var(--brand-dark);
+      text-decoration-thickness: 0.09em;
+      text-underline-offset: 0.18em;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--brand);
+    }
+
+    .site-shell {
+      min-height: 100vh;
+    }
+
+    .hero {
+      padding: 56px 20px 32px;
+      border-bottom: 1px solid rgba(15, 118, 110, 0.18);
+    }
+
+    .hero-inner,
+    .content {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 14px;
+      padding: 5px 10px;
+      border: 1px solid rgba(15, 118, 110, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.74);
+      color: var(--brand-dark);
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      line-height: 1.18;
+      color: #172024;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 4.9rem);
+      letter-spacing: 0;
+    }
+
+    .hero-summary {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--brand);
+      background: var(--brand);
+      color: white;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--brand-dark);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      padding: 30px 20px 64px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 16px;
+      align-self: start;
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+    }
+
+    .toc h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin: 7px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    section {
+      margin: 0 0 22px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.93);
+      box-shadow: var(--shadow);
+    }
+
+    section h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+    }
+
+    section h3 {
+      margin: 22px 0 8px;
+      font-size: 1.18rem;
+    }
+
+    section h4 {
+      margin: 18px 0 6px;
+      font-size: 1rem;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul,
+    ol {
+      margin-top: 8px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffdf8;
+    }
+
+    .card h3,
+    .card h4 {
+      margin-top: 0;
+    }
+
+    .callout {
+      margin: 18px 0;
+      padding: 16px;
+      border: 1px solid rgba(15, 118, 110, 0.22);
+      border-left: 5px solid var(--brand);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .warning {
+      border-color: var(--warn-line);
+      border-left-color: var(--gold);
+      background: var(--warn-bg);
+    }
+
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .steps > li {
+      counter-increment: step;
+      position: relative;
+      margin: 12px 0;
+      padding-left: 44px;
+    }
+
+    .steps > li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      border: 1px solid #c9c2b4;
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      background: #fff;
+      color: #1f2933;
+      font-size: 0.92em;
+      font-weight: 700;
+    }
+
+    .tool-list {
+      columns: 2;
+      column-gap: 28px;
+    }
+
+    .tool-list li {
+      break-inside: avoid;
+    }
+
+    .footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px 44px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 900px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .hero {
+        padding-top: 36px;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-list {
+        columns: 1;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .hero,
+      section,
+      .toc {
+        box-shadow: none;
+      }
+
+      .toc,
+      .hero-actions {
+        display: none;
+      }
+
+      .content {
+        display: block;
+      }
+
+      section {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">App Tutorial</p>
+        <h1>gridCAD electrical help and tutorial</h1>
+        <p class="hero-summary">Learn how to create sites and projects, draft CAD geometry, work with PDFs and images, add dimensions and tables, count items, annotate drawings, and export finished project documents.</p>
+        <div class="hero-actions">
+          <a class="button" href="#quick-start">Start the quick tutorial</a>
+          <a class="button secondary" href="https://mmcbloem.github.io/gridcad-support/">Support and privacy</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <nav class="toc" aria-label="Tutorial contents">
+        <h2>Contents</h2>
+        <ol>
+          <li><a href="#overview">What gridCAD electrical does</a></li>
+          <li><a href="#quick-start">Quick start</a></li>
+          <li><a href="#sites-projects">Sites and projects</a></li>
+          <li><a href="#canvas-basics">Canvas basics</a></li>
+          <li><a href="#drawing-tools">Drawing tools</a></li>
+          <li><a href="#precision">Snapping, constraints, and dimensions</a></li>
+          <li><a href="#editing">Selecting and editing</a></li>
+          <li><a href="#layers">Layers and organization</a></li>
+          <li><a href="#imports">PDF, DXF, and image imports</a></li>
+          <li><a href="#tables-calculations">Tables and calculations</a></li>
+          <li><a href="#item-counter">Item Counter</a></li>
+          <li><a href="#annotations-redaction">Annotations and redaction</a></li>
+          <li><a href="#export-backup">Export, backup, and restore</a></li>
+          <li><a href="#performance">Performance tips</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ol>
+      </nav>
+
+      <main>
+        <section id="overview">
+          <h2>1. What gridCAD electrical does</h2>
+          <p>gridCAD electrical is a CAD workspace for electrical site and project drawings. It combines drawing tools, imported PDFs and DXF files, editable tables, dimensions, annotations, item counting, and project export tools in one iPad or iPhone app.</p>
+          <div class="grid">
+            <div class="card">
+              <h3>Use it for</h3>
+              <ul>
+                <li>Site and project drawing organization.</li>
+                <li>Electrical layouts, schematic-style drawings, and documentation.</li>
+                <li>Imported PDF markup, item counting, and redaction.</li>
+                <li>PDF and DXF output for sharing or downstream CAD workflows.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Main work areas</h3>
+              <ul>
+                <li><strong>Project Explorer:</strong> create sites, projects, tasks, backups, settings, and privacy information.</li>
+                <li><strong>Canvas:</strong> draw, edit, import, annotate, count, dimension, and export project content.</li>
+                <li><strong>Sidebars and panels:</strong> manage layers, components, symbols, properties, calculations, and tool settings.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout warning">
+            <strong>Professional review:</strong> gridCAD electrical is a drafting, planning, estimating, and documentation tool. Review drawings, dimensions, calculations, item counts, exports, and imported content before fabrication, purchasing, installation, compliance submission, or safety-critical use.
+          </div>
+        </section>
+
+        <section id="quick-start">
+          <h2>2. Quick start: create your first drawing</h2>
+          <ol class="steps">
+            <li><strong>Create or open a site.</strong> From the project explorer, create a site for the job, customer, building, or project group.</li>
+            <li><strong>Create a project.</strong> Add a project inside the site. Give it a clear name so exports and backups are easy to identify.</li>
+            <li><strong>Open the canvas.</strong> Tap the project to enter the drawing workspace.</li>
+            <li><strong>Set your grid and snaps.</strong> Use the grid and snap controls for clean placement. Endpoint, midpoint, center, intersection, nearest, grid, and ortho snapping can be toggled as needed.</li>
+            <li><strong>Draw basic geometry.</strong> Use Line, Rectangle, Circle, Oval, Polygon, Polyline, Pen, Arc, Spline, Point, or Construction Line from the right toolbar.</li>
+            <li><strong>Select and edit.</strong> Switch to Select, tap or marquee objects, then use property panels, handles, dimensions, or left-toolbar editing tools.</li>
+            <li><strong>Add labels and dimensions.</strong> Use Text, Table, and Dimension tools to document the drawing.</li>
+            <li><strong>Export or share.</strong> Use Export for PDF or DXF output, or save backups from the project/site workflow.</li>
+          </ol>
+        </section>
+
+        <section id="sites-projects">
+          <h2>3. Sites, projects, and project records</h2>
+          <p>The project explorer is the starting point for organizing work. A site can contain multiple projects, folders, notes, tasks, and related records.</p>
+          <h3>Create a site</h3>
+          <ol>
+            <li>Open the project explorer.</li>
+            <li>Choose the action to create a new site.</li>
+            <li>Enter a site name and any job details you want to track.</li>
+            <li>Save the site.</li>
+          </ol>
+          <h3>Create a project</h3>
+          <ol>
+            <li>Open a site.</li>
+            <li>Create a new project.</li>
+            <li>Add the project name and any project information you want in title blocks or exports.</li>
+            <li>Open the project to start drawing.</li>
+          </ol>
+          <h3>Tasks and notes</h3>
+          <p>Use site and project tasks to track open work, due dates, priorities, tags, and project-specific reminders. Tasks help keep drawing corrections, counts, and follow-up items close to the project they belong to.</p>
+          <h3>Privacy and support</h3>
+          <p>The app includes a Privacy &amp; Disclaimer page from the project explorer. The public privacy policy and support page are available at <a href="https://mmcbloem.github.io/gridcad-support/">https://mmcbloem.github.io/gridcad-support/</a>.</p>
+        </section>
+
+        <section id="canvas-basics">
+          <h2>4. Canvas basics</h2>
+          <h3>Navigation</h3>
+          <ul>
+            <li><strong>Pan:</strong> move around the drawing without moving objects.</li>
+            <li><strong>Zoom:</strong> pinch to zoom in and out.</li>
+            <li><strong>View Center:</strong> use the view reset/center action when the drawing is hard to locate.</li>
+            <li><strong>Pan tool:</strong> switch to Pan mode when you want navigation without editing geometry.</li>
+          </ul>
+          <h3>Toolbars</h3>
+          <ul>
+            <li><strong>Right toolbar:</strong> main drawing tools such as Select, Line, Rectangle, Text, Image, Connector, Dimension, Table, and more.</li>
+            <li><strong>Left toolbar:</strong> editing tools such as Scale, Offset, Array Copy, Mirror, Trim, Extend, Break, Join, Close, Round Corner, Convert, Merge, Subtract, and Arrange.</li>
+            <li><strong>Top controls:</strong> common project actions such as Home, Finish, Copy, Paste, Grid, dimensions display, handles, constraints, appearance, import, export, and settings.</li>
+            <li><strong>Floating panels:</strong> tool-specific controls for text, connectors, dimensions, calculations, tables, and other workflows.</li>
+          </ul>
+          <h3>Toolbar Explainer</h3>
+          <p>Use the Toolbar Explainer when learning the interface. While it is active, tapping toolbar buttons explains the button instead of running the tool. Turn it off before resuming normal drafting.</p>
+        </section>
+
+        <section id="drawing-tools">
+          <h2>5. Drawing tools</h2>
+          <p>Most drawing tools work by selecting the tool, tapping or dragging on the canvas, and finishing the placement gesture. Snapping and ortho settings affect many placement workflows.</p>
+          <ul class="tool-list">
+            <li><strong>Select:</strong> choose and edit existing objects.</li>
+            <li><strong>Line:</strong> draw straight line segments.</li>
+            <li><strong>Rectangle:</strong> draw rectangles from one corner to the opposite corner.</li>
+            <li><strong>Circle:</strong> draw circles from a center and radius.</li>
+            <li><strong>Oval:</strong> draw ovals and ellipses.</li>
+            <li><strong>Polygon:</strong> draw regular polygons with configurable side counts.</li>
+            <li><strong>Polyline:</strong> draw connected multi-segment paths.</li>
+            <li><strong>Pen:</strong> draw Bezier curves with handles.</li>
+            <li><strong>Arc:</strong> draw curved arc segments.</li>
+            <li><strong>Spline:</strong> draw smooth curves through fit points.</li>
+            <li><strong>Text:</strong> place editable text labels and notes.</li>
+            <li><strong>Table:</strong> insert editable table grids.</li>
+            <li><strong>Point:</strong> place reference point markers.</li>
+            <li><strong>Construction Line:</strong> draw infinite dashed reference lines that help align geometry.</li>
+            <li><strong>Connector:</strong> draw routed connectors and wires.</li>
+            <li><strong>Spacer:</strong> draw spacer runs with managed node spacing and labels.</li>
+            <li><strong>Dimension:</strong> place measurement annotations.</li>
+            <li><strong>Image Import:</strong> import raster images from Photos or Files.</li>
+          </ul>
+          <h3>Polyline and path workflow</h3>
+          <ol>
+            <li>Choose Polyline.</li>
+            <li>Tap each node in sequence.</li>
+            <li>Use Finish to end the path, or Close to connect the last node back to the first.</li>
+            <li>Use Join, Round Corner, Offset, Convert, or Anchor Resize for later path editing.</li>
+          </ol>
+          <h3>Connector and wire workflow</h3>
+          <ol>
+            <li>Open the Connector panel if you need labels, arrows, routing style, or auto wire numbering.</li>
+            <li>Choose Connector.</li>
+            <li>Tap the start point and end point. Snapping helps endpoints land exactly on terminals, symbols, or geometry.</li>
+            <li>Edit routed connector style, labels, arrows, and wire numbering as needed.</li>
+          </ol>
+        </section>
+
+        <section id="precision">
+          <h2>6. Snapping, constraints, and dimensions</h2>
+          <h3>Snap controls</h3>
+          <p>Snapping helps place points accurately. Enable only the snap types you need for the current task if the drawing is dense.</p>
+          <ul>
+            <li><strong>Grid:</strong> snap points to the drawing grid.</li>
+            <li><strong>Endpoint:</strong> snap to line, path, connector, and object endpoints.</li>
+            <li><strong>Midpoint:</strong> snap to the center of compatible segments.</li>
+            <li><strong>Center:</strong> snap to circle, oval, and center-based objects.</li>
+            <li><strong>Intersection:</strong> snap to crossing geometry.</li>
+            <li><strong>Nearest:</strong> snap to the nearest point along compatible geometry.</li>
+            <li><strong>Ortho:</strong> lock placement or movement to horizontal and vertical directions.</li>
+          </ul>
+          <h3>Constraints</h3>
+          <p>Constraints preserve design intent while editing. Select compatible geometry first, then apply the constraint.</p>
+          <ul>
+            <li><strong>Horizontal and Vertical:</strong> keep geometry aligned along an axis.</li>
+            <li><strong>Parallel and Perpendicular:</strong> maintain direction relationships.</li>
+            <li><strong>Coincident:</strong> keep endpoints or points together.</li>
+            <li><strong>Tangent:</strong> preserve smooth contact between curves and other entities.</li>
+            <li><strong>Equal:</strong> keep compatible lengths or radii equal.</li>
+            <li><strong>Lock:</strong> anchor geometry in place for the constraint solver.</li>
+          </ul>
+          <h3>Dimension tool</h3>
+          <ol>
+            <li>Choose Dimension from the right toolbar.</li>
+            <li>Set the dimension type, arrows, offset, decimal places, trailing zeros, and measurement scale in the dimension panel.</li>
+            <li>Tap the first reference point.</li>
+            <li>Tap the second reference point.</li>
+            <li>Review the placed dimension text and adjust style or scale if needed.</li>
+          </ol>
+          <div class="callout">
+            <strong>Tip:</strong> snapped reference points create cleaner dimensions. If dimension text is difficult to read, zoom in or adjust text scale and offset from the dimension panel.
+          </div>
+        </section>
+
+        <section id="editing">
+          <h2>7. Selecting and editing objects</h2>
+          <h3>Select objects</h3>
+          <ul>
+            <li>Switch to Select mode before editing existing geometry.</li>
+            <li>Tap an object to select it.</li>
+            <li>Drag a selection area to select multiple objects.</li>
+            <li>Use handles, property panels, or editing tools to modify the selection.</li>
+          </ul>
+          <h3>Common editing tools</h3>
+          <div class="grid">
+            <div class="card">
+              <h4>Transform tools</h4>
+              <ul>
+                <li><strong>Scale:</strong> scale selected geometry around an anchor.</li>
+                <li><strong>Offset:</strong> create parallel or expanded copies.</li>
+                <li><strong>Array Copy:</strong> duplicate selections into rows, columns, or stepped layouts.</li>
+                <li><strong>Mirror:</strong> reflect selected objects across a mirror axis.</li>
+                <li><strong>Arrange:</strong> change visual stacking order.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h4>Geometry cleanup</h4>
+              <ul>
+                <li><strong>Segment Eraser:</strong> remove the segment you stroke across.</li>
+                <li><strong>Trim:</strong> cut geometry back to target boundaries.</li>
+                <li><strong>Extend:</strong> lengthen geometry to another object.</li>
+                <li><strong>Break:</strong> split an entity at the crossing point.</li>
+                <li><strong>Join and Close:</strong> combine segments or close an open path.</li>
+                <li><strong>Round Corner:</strong> soften selected corners.</li>
+              </ul>
+            </div>
+          </div>
+          <h3>Boolean and conversion tools</h3>
+          <ul>
+            <li><strong>Convert to Polylines:</strong> turn supported geometry into editable polyline paths.</li>
+            <li><strong>Convert to Wire:</strong> convert selected polylines into wire connectors with numbering support.</li>
+            <li><strong>Explode:</strong> break compound paths into separate parts.</li>
+            <li><strong>Merge:</strong> combine compatible overlapping or adjacent shapes.</li>
+            <li><strong>Subtract:</strong> cut selected subtractor shapes out of a main shape.</li>
+            <li><strong>Edit Vector Graphic:</strong> restore selected parts of a flattened vector graphic into editable drawing entities.</li>
+          </ul>
+          <h3>Undo and redo</h3>
+          <p>Use Undo after accidental edits, unwanted commits, or experiments. Use Redo if you went too far back. Making a new edit can clear some redo history.</p>
+        </section>
+
+        <section id="layers">
+          <h2>8. Layers, symbols, and organization</h2>
+          <p>The layer sidebar helps organize complex drawings. Use layers to group content by purpose, discipline, imported source, sheet, or workflow.</p>
+          <ul>
+            <li><strong>Show or hide layers</strong> to reduce clutter while drafting, selecting, counting, or exporting.</li>
+            <li><strong>Lock layers</strong> to protect finished geometry while working elsewhere.</li>
+            <li><strong>Use non-printable layers</strong> for construction guides, temporary markup, or drafting references that should not appear in final exports.</li>
+            <li><strong>Organize imported PDFs and DXF content</strong> onto clear layers so source drawings and editable geometry remain manageable.</li>
+            <li><strong>Use symbols and components</strong> for reusable graphical components and repeated drawing details.</li>
+          </ul>
+          <div class="callout">
+            <strong>Dense drawing tip:</strong> if selection becomes difficult, hide layers that are not needed for the current task, then turn them back on before final review or export.
+          </div>
+        </section>
+
+        <section id="imports">
+          <h2>9. PDF, DXF, image, and snapshot workflows</h2>
+          <h3>Import PDFs</h3>
+          <ol>
+            <li>Use the import/sidebar workflow to choose a PDF.</li>
+            <li>Place the PDF page or pages into the project.</li>
+            <li>Use layers and names to keep sheets organized.</li>
+            <li>Annotate, count, redact, trace, or use the PDF as a reference.</li>
+          </ol>
+          <p>PDF pages remain sharp when zoomed, rendered, or exported because the app stores the source PDF data for the project.</p>
+          <h3>Import DXF</h3>
+          <ol>
+            <li>Open the Import menu.</li>
+            <li>Choose a DXF file from Files.</li>
+            <li>Review imported geometry and layer mapping.</li>
+            <li>Clean up, edit, convert, or flatten the imported entities as needed.</li>
+          </ol>
+          <h3>Import images</h3>
+          <ol>
+            <li>Choose Image Import.</li>
+            <li>Select an image from Photos or Files.</li>
+            <li>Place it on the canvas.</li>
+            <li>Switch to Select to move, scale, crop, or arrange it.</li>
+          </ol>
+          <h3>Snapshots</h3>
+          <p>Snapshot mode captures a selected canvas area into an image-style object. Use it for reusable visual references or to preserve a region before further editing.</p>
+          <h3>Flattened vector graphics</h3>
+          <p>Flattened vector graphics can improve management of imported or grouped content. If they contain restorable vector payload data, use Edit Vector Graphic to pull selected areas back into normal editable entities.</p>
+        </section>
+
+        <section id="tables-calculations">
+          <h2>10. Tables and calculations</h2>
+          <h3>Tables</h3>
+          <ol>
+            <li>Choose Table from the toolbar.</li>
+            <li>Tap the canvas to place a default table.</li>
+            <li>Select the table to edit cells, resize columns and rows, or add and remove rows and columns.</li>
+            <li>Double-tap a cell to edit its text.</li>
+            <li>Use property controls for cell text, alignment, and fill.</li>
+          </ol>
+          <h3>Electrical calculations</h3>
+          <p>The Calculations panel includes common engineering aids such as power, current, voltage drop, transformer, motor, energy, battery runtime, solar, and panel-builder calculations. Calculators show the result and the basis used for the calculation.</p>
+          <ol>
+            <li>Open Calculations.</li>
+            <li>Choose the calculation type.</li>
+            <li>Enter the required values.</li>
+            <li>Review the result and engineering basis.</li>
+            <li>Use Insert Table to place an editable calculation table onto the canvas.</li>
+          </ol>
+          <div class="callout warning">
+            <strong>Verification:</strong> calculation outputs are engineering aids. Always verify final design values against project requirements, manufacturer data, standards, and local rules.
+          </div>
+        </section>
+
+        <section id="item-counter">
+          <h2>11. Item Counter for PDF pages</h2>
+          <p>Item Counter mode helps count repeated items on imported PDF drawings. It is designed for takeoffs, review, and counted sheet documentation.</p>
+          <h3>Start counting</h3>
+          <ol>
+            <li>Select an imported PDF page on the canvas.</li>
+            <li>Choose Count to enter Item Counter mode.</li>
+            <li>Draw a selection around the first item you want to count.</li>
+            <li>Tap matching items on the PDF to add colored marks and increase the count.</li>
+            <li>Use the sidebar to manage rows, categories, colors, and totals.</li>
+          </ol>
+          <h3>Useful Item Counter features</h3>
+          <ul>
+            <li><strong>New rows:</strong> keep similar but separate item types on different rows.</li>
+            <li><strong>Containers:</strong> view counts only for checked items inside a named region while the All tab keeps full-page totals.</li>
+            <li><strong>Custom marks:</strong> adjust mark size, opacity, and style for different PDF backgrounds.</li>
+            <li><strong>Save to Project:</strong> insert the current count table directly onto the canvas.</li>
+            <li><strong>Export counted PDF pages:</strong> export the source drawing with selections and manual check marks.</li>
+          </ul>
+          <div class="callout">
+            <strong>Tip:</strong> zoom into small PDF symbols before placing count marks. You can pan and zoom while counting.
+          </div>
+        </section>
+
+        <section id="annotations-redaction">
+          <h2>12. Annotation and redaction</h2>
+          <h3>Annotation mode</h3>
+          <p>Annotation mode is for freehand markup, review comments, highlights, stamps, callouts, and notes that sit over the drawing without changing the underlying CAD geometry.</p>
+          <ul>
+            <li>Use annotation tools for review notes and visual comments.</li>
+            <li>Tap an existing matching check mark, X, or stamp again to remove it.</li>
+            <li>Exit annotation mode to return to normal CAD editing.</li>
+            <li>Annotations can appear in PDF exports alongside the drawing.</li>
+          </ul>
+          <h3>Redaction mode</h3>
+          <p>Redaction mode is available for selected PDF pages. It lets you obscure sensitive content directly on a PDF page.</p>
+          <ol>
+            <li>Select a PDF page.</li>
+            <li>Choose Redact.</li>
+            <li>Draw redaction regions over the content that should be hidden.</li>
+            <li>Review the page before exporting or sharing.</li>
+          </ol>
+          <div class="callout warning">
+            <strong>Important:</strong> review redactions carefully before sharing exported documents. Make sure sensitive content is fully covered in the final output.
+          </div>
+        </section>
+
+        <section id="export-backup">
+          <h2>13. Export, backup, and restore</h2>
+          <h3>Export PDF</h3>
+          <ol>
+            <li>Open the Export menu.</li>
+            <li>Choose PDF export.</li>
+            <li>Select the export scope, page size, scale, and layout options.</li>
+            <li>Preview the output.</li>
+            <li>Save or share the PDF.</li>
+          </ol>
+          <h3>Export DXF</h3>
+          <ol>
+            <li>Open the Export menu.</li>
+            <li>Choose DXF export.</li>
+            <li>Choose whether to export the whole drawing or a selected scope.</li>
+            <li>Open the result in the receiving CAD workflow and verify geometry interpretation.</li>
+          </ol>
+          <h3>Backups and restore</h3>
+          <ul>
+            <li>Use site/project backup workflows to preserve project data.</li>
+            <li>Keep backups before large imports, destructive edits, redactions, or major cleanup sessions.</li>
+            <li>Restoring a site or project adds restored content and does not intentionally delete existing work.</li>
+            <li>Files saved outside the app are controlled by the destination folder, cloud service, or app you selected.</li>
+          </ul>
+          <h3>Before sharing a file</h3>
+          <ul>
+            <li>Review title blocks, notes, dimensions, and layer visibility.</li>
+            <li>Check imported PDFs and images for confidential content.</li>
+            <li>Verify that counted items and calculation tables are correct.</li>
+            <li>Open exported PDF or DXF files in the intended destination workflow to confirm the result.</li>
+          </ul>
+        </section>
+
+        <section id="performance">
+          <h2>14. Performance tips for large drawings</h2>
+          <ul>
+            <li><strong>Hide layers you do not need.</strong> Reducing visible content can make selection and navigation easier.</li>
+            <li><strong>Lock finished layers.</strong> This prevents accidental edits and simplifies active work.</li>
+            <li><strong>Keep PDFs organized.</strong> Name source sheets clearly and place them on sensible layers.</li>
+            <li><strong>Use non-printable layers for guides.</strong> Temporary guides can remain helpful without cluttering exports.</li>
+            <li><strong>Flatten complex vector content when appropriate.</strong> Flattening can make imported or repeated details easier to manage.</li>
+            <li><strong>Use Edit Vector only where needed.</strong> Restore just the area you need to edit rather than expanding entire dense drawings.</li>
+            <li><strong>Adjust performance settings.</strong> Use the Settings menu when older devices or very large projects need lighter rendering behavior.</li>
+            <li><strong>Save important outputs back to the project.</strong> Generated tables, counted pages, and reference outputs are easier to track when stored with the drawing set.</li>
+          </ul>
+        </section>
+
+        <section id="troubleshooting">
+          <h2>15. Troubleshooting</h2>
+          <h3>I cannot select the right object</h3>
+          <ul>
+            <li>Zoom in and try again.</li>
+            <li>Hide or lock nearby layers that are not part of the current task.</li>
+            <li>Use isolation mode after selecting the object or group you want to focus on.</li>
+          </ul>
+          <h3>Snapping is choosing the wrong point</h3>
+          <ul>
+            <li>Turn off snap types you do not need for the current operation.</li>
+            <li>Zoom closer to separate nearby snap targets.</li>
+            <li>Use ortho only when horizontal or vertical placement is intended.</li>
+          </ul>
+          <h3>An import looks different than expected</h3>
+          <ul>
+            <li>Check layer mapping and visibility after import.</li>
+            <li>Inspect line styles, fills, text, and scale.</li>
+            <li>For DXF, verify the result in the receiving or source CAD workflow because CAD applications can interpret entities differently.</li>
+          </ul>
+          <h3>A drawing feels slow</h3>
+          <ul>
+            <li>Hide heavy PDF, image, or imported-detail layers while editing other content.</li>
+            <li>Use performance settings for large projects.</li>
+            <li>Split very large jobs into clear sites, projects, layers, or spaces when practical.</li>
+          </ul>
+          <h3>I need help</h3>
+          <p>Visit the support page at <a href="https://mmcbloem.github.io/gridcad-support/">https://mmcbloem.github.io/gridcad-support/</a>.</p>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer">
+      <p>gridCAD electrical tutorial. Last updated May 16, 2026. Support and privacy policy: <a href="https://mmcbloem.github.io/gridcad-support/">https://mmcbloem.github.io/gridcad-support/</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>
